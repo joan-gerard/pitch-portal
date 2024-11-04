@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import { auth, signIn, signOut } from "@/auth";
 
-const Navbar = async () => {
+export const Navbar = async () => {
   const session = await auth();
   return (
     <header className="px-5 pr-3 bg-white shadow-sm font-work-sans">
@@ -46,4 +46,3 @@ const Navbar = async () => {
   );
 };
 
-export default Navbar;
