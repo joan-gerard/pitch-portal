@@ -59,8 +59,10 @@ import { handlers } from "@/auth";
 export const {GET, POST} = handlers
 ```
 
-import the functions in your projects
+import the functions in your projects and get the ```session``` object
 
 ```
 import { auth, signIn, signOut } from "@/auth";
+
+const session = await auth();
 ```
