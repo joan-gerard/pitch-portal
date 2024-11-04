@@ -66,3 +66,28 @@ import { auth, signIn, signOut } from "@/auth";
 
 const session = await auth();
 ```
+
+## Theming and Fonts
+
+Add custom themes to the ```tailwing.config``` file.
+
+For fonts, add ```ttf```files to the ```fonts```folder. Then in the root layout file, add the newly imported fonts to the ```localFont``` object and give it a variable name
+
+```
+const workSans = localFont({
+  src: [
+    {
+      path: "./fonts/WorkSans-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./fonts/WorkSans-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+  variable: "--font-work-sans",
+});
+
+```
