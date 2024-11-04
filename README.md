@@ -53,14 +53,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 Add handlers in app/api/auth/[...nextauth]/route.ts
 
-````
+```
 import { handlers } from "@/auth";
 
 export const {GET, POST} = handlers
-````
+```
 
 import the functions in your projects
 
-````
+```
 import { auth, signIn, signOut } from "@/auth";
 ```
