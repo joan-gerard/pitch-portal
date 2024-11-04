@@ -91,3 +91,15 @@ const workSans = localFont({
 });
 
 ```
+
+## Utility classes
+
+In the ```global.css``` file, you can add the ```@layer utilities``` directive and create custom CSS classes using Tailwind
+
+```
+@layer utilities {
+  .heading {
+    @apply uppercase bg-black px-6 py-3 font-work-sans;
+  }
+}
+```
