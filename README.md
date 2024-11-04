@@ -41,7 +41,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Auth with NextAuth
 
-At the root of the project, create an file called auth.ts
+At the root of the project, create an file called ```auth.ts```
 ```
 import NextAuth from "next-auth";
 import Github from "next-auth/providers/github";
@@ -51,7 +51,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 });
 ```
 
-Add handlers in app/api/auth/[...nextauth]/route.ts
+Add handlers in ```app/api/auth/[...nextauth]/route.ts```
 
 ```
 import { handlers } from "@/auth";
