@@ -41,7 +41,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Auth with NextAuth
 
-At the root of the project, create an file called ```auth.ts```
+At the root of the project, create an file called `auth.ts`
+
 ```
 import NextAuth from "next-auth";
 import Github from "next-auth/providers/github";
@@ -51,7 +52,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 });
 ```
 
-Add handlers in ```app/api/auth/[...nextauth]/route.ts```
+Add handlers in `app/api/auth/[...nextauth]/route.ts`
 
 ```
 import { handlers } from "@/auth";
@@ -59,7 +60,7 @@ import { handlers } from "@/auth";
 export const {GET, POST} = handlers
 ```
 
-import the functions in your projects and get the ```session``` object
+import the functions in your projects and get the `session` object
 
 ```
 import { auth, signIn, signOut } from "@/auth";
@@ -69,9 +70,9 @@ const session = await auth();
 
 ## Theming and Fonts
 
-Add custom themes to the ```tailwing.config``` file.
+Add custom themes to the `tailwing.config` file.
 
-For fonts, add ```ttf```files to the ```fonts```folder. Then in the root layout file, add the newly imported fonts to the ```localFont``` object and give it a variable name
+For fonts, add `ttf`files to the `fonts`folder. Then in the root layout file, add the newly imported fonts to the `localFont` object and give it a variable name
 
 ```
 const workSans = localFont({
@@ -94,7 +95,7 @@ const workSans = localFont({
 
 ## Utility classes
 
-In the ```global.css``` file, you can add the ```@layer utilities``` directive and create custom CSS classes using Tailwind
+In the `global.css` file, you can add the `@layer utilities` directive and create custom CSS classes using Tailwind
 
 ```
 @layer utilities {
@@ -109,6 +110,7 @@ In the ```global.css``` file, you can add the ```@layer utilities``` directive a
 With Sanity, you can leverage their APIs to build a whole OS around the content. Sanity integrates very well with Next.js
 
 ### Setup
+
 run this cmd to initialize the project with the CLI
 
 ```
@@ -116,8 +118,79 @@ npm create sanity@latest -- --project [projectID] --dataset production --templat
 ```
 
 ### Studio
-To enter the studio add ```/studio``` to the url
+
+To enter the studio add `/studio` to the url
 
 ### Workflow
 
 ![Alt text](public/sanity-workflow.png)
+
+### Schema
+
+Inside `sanity/schemaTypes` folder, create a new file called `author.ts` and add the following declaration
+
+```
+import { UserIcon } from "lucide-react";
+import { defineField, defineType } from "sanity";
+
+export const author = defineType({
+  name: "author",
+  title: "Author",
+  type: "document",
+  icon: UserIcon,
+  fields: [
+    defineField({
+      name: "id",
+      type: "number",
+    }),
+    defineField({
+      name: "name",
+      type: "string",
+    }),
+  ],
+  preview: {
+    select: {
+      title: '"name',
+    },
+  },
+});
+```
+
+```
+export const startup = defineType({
+  name: "startup",
+  title: "Startup",
+  type: "document",
+  fields: [
+    defineField({
+      name: "title",
+      type: "string",
+    }),
+    defineField({
+      name: "slug",
+      type: "slug",
+      options: {
+        source: "title",
+      },
+    }),
+    defineField({
+      name: "author",
+      type: "reference",
+      to: { type: "author" },
+    }),
+    defineField({
+      name: "category",
+      type: "string",
+      validation: (Rule) =>
+        Rule.min(1).max(20).required().error("Please enter a categoty"),
+    }),
+    defineField({
+      name: "image",
+      type: "url",
+      validation: (Rule) => Rule.required(),
+    }),
+  ],
+});
+```
+
+Add the schema name to the `types` array in the `sanity/schemaTypes/index.ts` file
