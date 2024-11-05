@@ -194,3 +194,66 @@ export const startup = defineType({
 ```
 
 Add the schema name to the `types` array in the `sanity/schemaTypes/index.ts` file
+
+## Fetching Data
+
+To get Sanity data, you must use GROQ (Sanity's own query language)
+
+### Queries
+Create a `queries.ts` in the `sanity/lib` folder
+
+```javascript
+import { defineQuery } from "next-sanity";
+
+export const STARTUPS_QUERY = defineQuery(`
+    *[_type == "startup" && defined(slug.current)] | order(_createdAt desc) {
+        _id, 
+        title,
+        slug,
+        _createdAt,
+        views,
+        description,
+        category,
+        image,
+        author -> {
+            _id, name, image, bio
+        }
+}`);
+```
+
+### Data
+
+```javascript
+import { client } from "@/sanity/lib/client";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
+
+const posts = await client.fetch(STARTUPS_QUERY);
+```
+
+## Sanity Type Generation
+
+Run this command to extract types from Schemas and to create a `sanity/extract.json` file
+```bash
+npx sanity@latest schema extract --path=./sanity/extract.json
+```
+
+Create a `sanity-typegen.json` file at the root and add following config object
+```bash
+{
+  "path": "./src/**/*.{ts,tsx,js,jsx}",
+  "schema": "./sanity/extract.json",
+  "generates": "./sanity/types.ts"
+}
+```
+
+Now run this command to create a `type.ts` file and generate types from the schemas
+```bash
+npx sanity@latest typegen generate
+```
+To automise the creation of the types each time we add, delete or update the schemas, you can run the command `npx run typegen` after adding new scripts
+
+```javascript
+  "predev": "npm run typegen",
+  "prebuild": "npm run typegen",
+  "typegen": "sanity schema extract --path=./sanity/extract.json && sanity typegen generate"
+```
