@@ -97,7 +97,7 @@ const workSans = localFont({
 
 In the `global.css` file, you can add the `@layer utilities` directive and create custom CSS classes using Tailwind
 
-```
+```css
 @layer utilities {
   .heading {
     @apply uppercase bg-black px-6 py-3 font-work-sans;
@@ -113,7 +113,7 @@ With Sanity, you can leverage their APIs to build a whole OS around the content.
 
 run this cmd to initialize the project with the CLI
 
-```
+```bash
 npm create sanity@latest -- --project [projectID] --dataset production --template clean
 ```
 
@@ -127,9 +127,9 @@ To enter the studio add `/studio` to the url
 
 ### Schema
 
-Inside `sanity/schemaTypes` folder, create a new file called `author.ts` and add the following declaration
+Inside `sanity/schemaTypes` folder, create new files called `author.ts` and `startup.ts` and add the following declaration
 
-```
+```javascript
 import { UserIcon } from "lucide-react";
 import { defineField, defineType } from "sanity";
 
@@ -156,7 +156,7 @@ export const author = defineType({
 });
 ```
 
-```
+```javascript
 export const startup = defineType({
   name: "startup",
   title: "Startup",
