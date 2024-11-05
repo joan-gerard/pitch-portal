@@ -103,3 +103,21 @@ In the ```global.css``` file, you can add the ```@layer utilities``` directive a
   }
 }
 ```
+
+## Sanity
+
+With Sanity, you can leverage their APIs to build a whole OS around the content. Sanity integrates very well with Next.js
+
+### Setup
+run this cmd to initialize the project with the CLI
+
+```
+npm create sanity@latest -- --project [projectID] --dataset production --template clean
+```
+
+### Studio
+To enter the studio add ```/studio``` to the url
+
+### Workflow
+
+![Alt text](public/sanity-workflow.png)
