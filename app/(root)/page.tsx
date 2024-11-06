@@ -11,11 +11,26 @@ export default async function Home({
 }) {
   const query = (await searchParams).query;
 
+  const posts = [
+    {
+      _createdAd: new Date(),
+      views: 55,
+      author: {
+        _id: 1,
+        name: "Bob",
+      },
+      _id: 1,
+      description: "This is a description",
+      category: "Robots",
+      title: "We Robots",
+      image: "https://placehold.co/600x400",
+    },
+  ];
   // Original data fetch
   // const posts = await client.fetch(STARTUPS_QUERY);
 
   // New fetch using Live Content API
-  const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY });
+  // const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY });
 
   return (
     <>
@@ -35,7 +50,7 @@ export default async function Home({
         <ul className="mt-7 card_grid">
           {posts?.length > 0 ? (
             <>
-              {posts.map((post: StartupTypeCard) => (
+              {posts.map((post: any) => (
                 <StartupCard post={post} key={post?._id} />
               ))}
             </>
