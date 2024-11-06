@@ -257,3 +257,33 @@ To automise the creation of the types each time we add, delete or update the sch
   "prebuild": "npm run typegen",
   "typegen": "sanity schema extract --path=./sanity/extract.json && sanity typegen generate"
 ```
+
+## Cache and Live API
+
+### ISR
+Incremental Static Regeneration (ISR) in Next.js fetches and caches data, serving cached data for requests within a set revalidation period (e.g., 60 seconds) and re-fetching data from the source if the cached data becomes stale after this period.
+
+### Live Content API
+With the Live Content API the application can respond instantly to changes, serving up-to-date content to all users
+
+```javascript
+import { client } from "@/sanity/client";
+import { defineLive } from "next-sanity";
+
+const { sanityFetch, SanityLive } = defineLive({ client });
+
+export default async function Page() {
+  const {data: products} = await sanityFetch({ query: PRODUCTS_QUERY });
+
+  return (
+    <section>
+      {products.map((product) => (
+        <article key={product._id}>
+          <a href={`/product/${product.slug}`}>{product.title}</a>
+        </article>
+      ))}
+      <SanityLive />
+    </section>
+  );
+}
+```
