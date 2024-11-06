@@ -2,6 +2,7 @@
 import SearchForm from "@/components/SearchForm";
 import StartupCard from "@/components/StartupCard";
 // import type { StartupTypeCard } from "@/components/StartupCard";
+import type { TestType } from "@/components/StartupCard";
 // import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 
 export default async function Home({
@@ -13,7 +14,7 @@ export default async function Home({
 
   const posts = [
     {
-      _createdAd: new Date(),
+      _createdAt: new Date(),
       views: 55,
       author: {
         _id: 1,
@@ -50,7 +51,7 @@ export default async function Home({
         <ul className="mt-7 card_grid">
           {posts?.length > 0 ? (
             <>
-              {posts.map((post: any) => (
+              {posts.map((post: TestType) => (
                 <StartupCard post={post} key={post?._id} />
               ))}
             </>
