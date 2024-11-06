@@ -7,21 +7,21 @@ import { Button } from "./ui/button";
 import { Author, Startup } from "@/sanity/types";
 
 export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
-export type TestType = {
-  _createdAt: string;
-  views: number;
-  author: {
-    name: string;
-    _id: number;
-  };
-  title: string;
-  category: string;
-  _id: number;
-  image: string;
-  description: string;
-};
+// export type TestType = {
+//   _createdAt: string;
+//   views: number;
+//   author: {
+//     name: string;
+//     _id: number;
+//   };
+//   title: string;
+//   category: string;
+//   _id: number;
+//   image: string;
+//   description: string;
+// };
 
-const StartupCard = ({ post }: { post: TestType }) => {
+const StartupCard = ({ post }: { post: StartupTypeCard }) => {
   const {
     _createdAt,
     views,
