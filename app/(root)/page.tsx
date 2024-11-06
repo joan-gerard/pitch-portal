@@ -33,7 +33,7 @@ export default async function Home({
 
   // New fetch using Live Content API
   const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY });
-
+  console.log("POST", posts);
   return (
     <>
       <section className="pink_container">
