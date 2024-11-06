@@ -200,13 +200,21 @@ Add the schema name to the `types` array in the `sanity/schemaTypes/index.ts` fi
 To get Sanity data, you must use GROQ (Sanity's own query language)
 
 ### Queries
-Create a `queries.ts` in the `sanity/lib` folder
+Create a `queries.ts` in the `sanity/lib` folder.
+
+This GROQ query below fetches startup documents from Sanity, optionally filters them based on a search term (matching against title, category, or author name), orders them by creation date, and returns specified fields including author details.
 
 ```javascript
 import { defineQuery } from "next-sanity";
 
 export const STARTUPS_QUERY = defineQuery(`
-    *[_type == "startup" && defined(slug.current)] | order(_createdAt desc) {
+    *[_type == "startup" && defined(slug.current) && !defined($search) 
+    
+    || title match $search 
+    || category match $search 
+    || author-> name match $search] 
+    
+    | order(_createdAt desc) {
         _id, 
         title,
         slug,
