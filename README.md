@@ -261,7 +261,7 @@ To automise the creation of the types each time we add, delete or update the sch
 ## Cache and Live API
 
 ### ISR
-Incremental Static Regeneration (ISR) in Next.js fetches and caches data, serving cached data for requests within a set revalidation period (e.g., 60 seconds) and re-fetching data from the source if the cached data becomes stale after this period.
+Incremental Static Regeneration (ISR) in Next.js fetches and caches data by default, serving cached data for requests within a set revalidation period (e.g., 60 seconds) and re-fetching data from the source if the cached data becomes stale after this period.
 
 ### Live Content API
 With the Live Content API the application can respond instantly to changes, serving up-to-date content to all users
