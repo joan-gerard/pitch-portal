@@ -295,3 +295,8 @@ export default async function Page() {
   );
 }
 ```
+
+## Partial Pre Rendering (PPR)
+
+PPR combines static and dynamic components in the same route
+[Experimental - wait for ready to production release before integration]
