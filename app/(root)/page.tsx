@@ -12,6 +12,7 @@ export default async function Home({
   searchParams: Promise<{ query?: string }>;
 }) {
   const query = (await searchParams).query;
+  const params = { search: query || null };
 
   // const posts = [
   //   {
@@ -30,12 +31,11 @@ export default async function Home({
   // ];
 
   // Original data fetch
-  const posts = await client.fetch(STARTUPS_QUERY);
+  const posts = await client.fetch(STARTUPS_QUERY, params);
 
   // New fetch using Live Content API
   // const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY });
 
-  console.log("POST", posts);
   return (
     <>
       <section className="pink_container">
