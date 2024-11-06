@@ -8,7 +8,7 @@ import { Author, Startup } from "@/sanity/types";
 
 export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
 export type TestType = {
-  _createdAt: Date;
+  _createdAt: string;
   views: number;
   author: {
     name: string;
@@ -21,7 +21,7 @@ export type TestType = {
   description: string;
 };
 
-const StartupCard = ({ post }: { post: any }) => {
+const StartupCard = ({ post }: { post: TestType }) => {
   const {
     _createdAt,
     views,
