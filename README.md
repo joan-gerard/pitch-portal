@@ -8,34 +8,11 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 # Steps
 
@@ -195,11 +172,12 @@ export const startup = defineType({
 
 Add the schema name to the `types` array in the `sanity/schemaTypes/index.ts` file
 
-## Fetching Data
+## Sanity Data
 
 To get Sanity data, you must use GROQ (Sanity's own query language)
 
 ### Queries
+
 Create a `queries.ts` in the `sanity/lib` folder.
 
 This GROQ query below fetches startup documents from Sanity, optionally filters them based on a search term (matching against title, category, or author name), orders them by creation date, and returns specified fields including author details.
@@ -229,7 +207,7 @@ export const STARTUPS_QUERY = defineQuery(`
 }`);
 ```
 
-### Data
+### READ Data
 
 ```javascript
 import { client } from "@/sanity/lib/client";
@@ -238,14 +216,53 @@ import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 const posts = await client.fetch(STARTUPS_QUERY);
 ```
 
+### WRITE Data
+
+- Create a token in Sanity API and add to env as `SANITY_WRITE_TOKEN`
+- Create a `write-client.ts` file in `sanity/lib/`
+
+```javascript
+import "server-only";
+import { createClient } from "next-sanity";
+
+import { apiVersion, dataset, projectId, token } from "../env";
+
+export const writeClient = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  token,
+  useCdn: true, // Set to false if statically generating pages, using ISR or tag-based revalidation
+});
+
+if (!writeClient.config().token) {
+  throw new Error("Write token not found");
+}
+```
+
+- Page
+
+```javascript
+await writeClient
+  .patch(id)
+  .set({ views: totalViews + 1 })
+  .commit();
+```
+
+### unstable_after
+
+`unstable_after` is an experimental Next.js function that allows to schedule work to be executed after a response or pre-render is completed. In this case, the total of views should only increment after receiving the most up-to-date total from Sanity
+
 ## Sanity Type Generation
 
 Run this command to extract types from Schemas and to create a `sanity/extract.json` file
+
 ```bash
 npx sanity@latest schema extract --path=./sanity/extract.json
 ```
 
 Create a `sanity-typegen.json` file at the root and add following config object
+
 ```bash
 {
   "path": "./src/**/*.{ts,tsx,js,jsx}",
@@ -255,9 +272,11 @@ Create a `sanity-typegen.json` file at the root and add following config object
 ```
 
 Now run this command to create a `type.ts` file and generate types from the schemas
+
 ```bash
 npx sanity@latest typegen generate
 ```
+
 To automise the creation of the types each time we add, delete or update the schemas, you can run the command `npx run typegen` after adding new scripts
 
 ```javascript
@@ -269,9 +288,11 @@ To automise the creation of the types each time we add, delete or update the sch
 ## Cache and Live API
 
 ### ISR
+
 Incremental Static Regeneration (ISR) in Next.js fetches and caches data by default, serving cached data for requests within a set revalidation period (e.g., 60 seconds) and re-fetching data from the source if the cached data becomes stale after this period.
 
 ### Live Content API
+
 With the Live Content API the application can respond instantly to changes, serving up-to-date content to all users
 
 ```javascript
@@ -281,7 +302,7 @@ import { defineLive } from "next-sanity";
 const { sanityFetch, SanityLive } = defineLive({ client });
 
 export default async function Page() {
-  const {data: products} = await sanityFetch({ query: PRODUCTS_QUERY });
+  const { data: products } = await sanityFetch({ query: PRODUCTS_QUERY });
 
   return (
     <section>
