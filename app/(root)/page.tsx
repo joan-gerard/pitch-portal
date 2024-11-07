@@ -3,8 +3,8 @@ import SearchForm from "@/components/SearchForm";
 import StartupCard from "@/components/StartupCard";
 import type { StartupTypeCard } from "@/components/StartupCard";
 // import type { TestType } from "@/components/StartupCard";
-// import { sanityFetch, SanityLive } from "@/sanity/lib/live";
-import { client } from "@/sanity/lib/client";
+import { sanityFetch } from "@/sanity/lib/live";
+// import { client } from "@/sanity/lib/client";
 
 export default async function Home({
   searchParams,
@@ -31,10 +31,10 @@ export default async function Home({
   // ];
 
   // Original data fetch
-  const posts = await client.fetch(STARTUPS_QUERY, params);
+  // const posts = await client.fetch(STARTUPS_QUERY, params);
 
   // New fetch using Live Content API
-  // const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY });
+  const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY, params });
 
   return (
     <>
