@@ -1,10 +1,12 @@
-import { formatDate } from "@/lib/utils";
-import { EyeIcon } from "lucide-react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { EyeIcon } from "lucide-react";
+
 import { Button } from "./ui/button";
-import { Author, Startup } from "@/sanity/types";
+import { formatDate } from "@/lib/utils";
+
+import type { Author, Startup } from "@/sanity/types";
 
 export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
 // export type TestType = {

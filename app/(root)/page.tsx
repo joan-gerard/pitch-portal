@@ -1,10 +1,9 @@
-import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import SearchForm from "@/components/SearchForm";
 import StartupCard from "@/components/StartupCard";
-import type { StartupTypeCard } from "@/components/StartupCard";
-// import type { TestType } from "@/components/StartupCard";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/live";
-// import { client } from "@/sanity/lib/client";
+
+import type { StartupTypeCard } from "@/components/StartupCard";
 
 export default async function Home({
   searchParams,
@@ -13,22 +12,6 @@ export default async function Home({
 }) {
   const query = (await searchParams).query;
   const params = { search: query || null };
-
-  // const posts = [
-  //   {
-  //     _createdAt: "22/10/24",
-  //     views: 55,
-  //     author: {
-  //       _id: 1,
-  //       name: "Bob",
-  //     },
-  //     _id: 1,
-  //     description: "This is a description",
-  //     category: "Robots",
-  //     title: "We Robots",
-  //     image: "https://placehold.co/600x400",
-  //   },
-  // ];
 
   // Original data fetch
   // const posts = await client.fetch(STARTUPS_QUERY, params);
