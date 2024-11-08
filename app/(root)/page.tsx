@@ -4,6 +4,7 @@ import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/live";
 
 import type { StartupTypeCard } from "@/components/StartupCard";
+import { auth } from "@/auth";
 
 export default async function Home({
   searchParams,
@@ -12,6 +13,11 @@ export default async function Home({
 }) {
   const query = (await searchParams).query;
   const params = { search: query || null };
+  const session = await auth();
+
+  if (session) {
+    console.log("SESSION", session);
+  }
 
   // Original data fetch
   // const posts = await client.fetch(STARTUPS_QUERY, params);
