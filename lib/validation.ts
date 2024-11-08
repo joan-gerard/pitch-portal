@@ -13,6 +13,7 @@ export const formSchema = z.object({
         const contentType = res.headers.get("content-type");
         return contentType?.startsWith("image/");
       } catch (error) {
+        console.log(error);
         return false;
       }
     }),
