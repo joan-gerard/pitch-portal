@@ -321,3 +321,13 @@ export default async function Page() {
 
 PPR combines static and dynamic components in the same route
 [Experimental - wait for ready to production release before integration]
+
+## Create Startup
+
+### Form
+
+`useActionState` is an experimental hook that aims at replacing `useFormState` and that allows you to update state based on the result of a form action.
+
+```javascript
+const [state, formAction, isPending] = useActionState(fn, initialState, permalink?);
+```
