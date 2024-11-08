@@ -9,14 +9,15 @@ import { Button } from "./ui/button";
 import { Send } from "lucide-react";
 import { formSchema } from "@/lib/validation";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 const StartupForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pitch, setPitch] = React.useState("");
   const { toast } = useToast();
-  const router = useRouter();
+  // const router = useRouter();
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
+    console.log("prevState 1", prevState);
     try {
       const formValues = {
         title: formData.get("title") as string,
@@ -47,6 +48,8 @@ const StartupForm = () => {
           description: "Please check your inputs and try again",
           variant: "destructive",
         });
+        console.log("prevState 2", prevState);
+
         return { ...prevState, error: "Validation  failed", status: "ERROR" };
       } else {
         toast({
@@ -54,6 +57,7 @@ const StartupForm = () => {
           description: "An unexpected error has occured",
           variant: "destructive",
         });
+        console.log("prevState 3", prevState);
 
         return {
           ...prevState,
