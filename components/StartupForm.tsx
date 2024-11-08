@@ -72,6 +72,8 @@ const StartupForm = () => {
     error: "",
     status: "INITIAL",
   });
+
+  console.log(state);
   return (
     <form action={formAction} className="startup-form">
       <div>
