@@ -337,3 +337,5 @@ Caveat > `useActionState` by defaut will reset forms when Encountering any error
 
 ### Server Actions
 Server Actions are asynchronous functions that are executed on the server. They can be called in Server and Client Components to handle form submissions and data mutations in Next.js applications.
+
+## Performance and Bug Tracking
