@@ -4,6 +4,17 @@ import { client } from "./sanity/lib/client";
 import { AUTHOR_BY_GITHUB_ID_QUERY } from "./sanity/lib/queries";
 import { writeClient } from "./sanity/lib/write-client";
 
+declare module "next-auth" {
+  interface Session {
+    id: string;
+    user?: {
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Github],
   callbacks: {

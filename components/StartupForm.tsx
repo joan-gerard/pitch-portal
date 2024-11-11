@@ -3,21 +3,21 @@ import React, { useState, useActionState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { z } from "zod";
 import { Send } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { formSchema } from "@/lib/validation";
 import { useToast } from "@/hooks/use-toast";
-// import { useRouter } from "next/navigation";
+import { createStartup } from "@/lib/actions";
 
 const StartupForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pitch, setPitch] = React.useState("");
   const { toast } = useToast();
-  // const router = useRouter();
+  const router = useRouter();
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
-    console.log("prevState 1", prevState);
     try {
       const formValues = {
         title: formData.get("title") as string,
@@ -28,17 +28,18 @@ const StartupForm = () => {
       };
 
       await formSchema.parseAsync(formValues);
-      console.log("formValues", formValues);
 
-      //   if (result.status == "SUCCESS") {
-      //     toast({
-      //       title: "Success",
-      //       description: "Yuur startup pitch has been created!",
-      //     });
-      //     router.push(`/startup/${result.id}`);
-      //   }
+      const result = await createStartup(prevState, formData, pitch);
 
-      //   return result;
+      if (result.status == "SUCCESS") {
+        toast({
+          title: "Success",
+          description: "Yuur startup pitch has been created!",
+        });
+        router.push(`/startup/${result._id}`);
+      }
+
+      return result;
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
@@ -48,7 +49,6 @@ const StartupForm = () => {
           description: "Please check your inputs and try again",
           variant: "destructive",
         });
-        console.log("prevState 2", prevState);
 
         return { ...prevState, error: "Validation  failed", status: "ERROR" };
       } else {
@@ -57,7 +57,6 @@ const StartupForm = () => {
           description: "An unexpected error has occured",
           variant: "destructive",
         });
-        console.log("prevState 3", prevState);
 
         return {
           ...prevState,
@@ -73,7 +72,6 @@ const StartupForm = () => {
     status: "INITIAL",
   });
 
-  console.log(state);
   return (
     <form action={formAction} className="startup-form">
       <div>
