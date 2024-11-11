@@ -331,3 +331,9 @@ PPR combines static and dynamic components in the same route
 ```javascript
 const [state, formAction, isPending] = useActionState(fn, initialState, permalink?);
 ```
+Caveat > `useActionState` by defaut will reset forms when Encountering any errors. A strategy is needed to save the client side calues somehow, ie local storage, etc
+
+## Concepts
+
+### Server Actions
+Server Actions are asynchronous functions that are executed on the server. They can be called in Server and Client Components to handle form submissions and data mutations in Next.js applications.
