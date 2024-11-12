@@ -357,12 +357,12 @@ In `startup/id` route, we are fetching two data `sequentially`
 Since the second fetch does not depend on the first one, we can take advantage of the `parallel` data fetching feature
 
 ```javascript
-  const [startup, { select: editorPicks }] = await Promise.all([
-    client.fetch(STARTUP_BY_ID_QUERY, {
-      id,
-    }),
-    client.fetch(PLAYLIST_BY_SLUG_QUERY, {
-      slug: "editor-picks",
-    }),
-  ]);
-```∫
+const [startup, { select: editorPicks }] = await Promise.all([
+  client.fetch(STARTUP_BY_ID_QUERY, {
+    id,
+  }),
+  client.fetch(PLAYLIST_BY_SLUG_QUERY, {
+    slug: "editor-picks",
+  }),
+]);
+```
