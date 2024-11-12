@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { auth, signIn, signOut } from "@/auth";
+import { Avatar, AvatarImage } from "./ui/avatar";
 
 const Navbar = async () => {
   const session = await auth();
@@ -11,11 +12,11 @@ const Navbar = async () => {
         <Link href="/">
           <Image src="/logo.png" alt="logo" width={144} height={30} />
         </Link>
-        <div className="flex items-center gap-5 text-black">
+        <div className="flex items-center gap-5 text-black py-2">
           {session && session?.user ? (
             <>
               <Link href="/startup/create">
-                <span>Create</span>
+                <span className="">Create</span>
               </Link>
               <form
                 action={async () => {
@@ -26,7 +27,12 @@ const Navbar = async () => {
                 <button type="submit">Logout</button>
               </form>
               <Link href={`/user/${session.id}`}>
-                <span>{session.user.name}</span>
+                <Avatar className="size-10">
+                  <AvatarImage
+                    src={session.user.image || ""}
+                    alt={session.user.name || ""}
+                  />
+                </Avatar>
               </Link>
             </>
           ) : (
