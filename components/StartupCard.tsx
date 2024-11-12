@@ -84,7 +84,7 @@ export const StartupCardSkeleton = () => {
   return (
     <>
       {[0, 1, 2, 3, 4].map((index) => (
-        <li key={cn("skeleton, index")}>
+        <li key={cn("skeleton", index)}>
           <Skeleton className="startup-card_skeleton" />
         </li>
       ))}
