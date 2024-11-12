@@ -4,10 +4,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import markdownit from "markdown-it";
 
-import { StartupTypeCard } from "@/components/StartupCard";
+import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
 import { formatDate } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
-import { STARTUP_BY_ID_QUERY } from "@/sanity/lib/queries";
+import {
+  PLAYLIST_BY_SLUG_QUERY,
+  STARTUP_BY_ID_QUERY,
+} from "@/sanity/lib/queries";
 import View from "@/components/View";
 
 const md = markdownit();
@@ -15,9 +18,15 @@ const md = markdownit();
 const page = async ({ params }: { params: Promise<{ _id: string }> }) => {
   const id = (await params)._id;
 
-  const startup: StartupTypeCard = await client.fetch(STARTUP_BY_ID_QUERY, {
-    id,
-  });
+  const [startup, { select: editorPicks }] = await Promise.all([
+    client.fetch(STARTUP_BY_ID_QUERY, {
+      id,
+    }),
+    client.fetch(PLAYLIST_BY_SLUG_QUERY, {
+      slug: "editor-picks",
+    }),
+  ]);
+
   if (!startup) return notFound();
 
   const parsedContent = md.render(startup.pitch || "");
@@ -72,7 +81,16 @@ const page = async ({ params }: { params: Promise<{ _id: string }> }) => {
         </div>
         <hr className="divider" />
 
-        {/* EDITOR SELECTED STARTUPS */}
+        {editorPicks.length > 0 && (
+          <div className="max-w-4xl mx-auto">
+            <p className="text-30-semibold">Editor Picks</p>
+            <ul className="mt-7 card_grid-sm">
+              {editorPicks.map((pick: StartupTypeCard) => (
+                <StartupCard key={pick._id} post={pick} />
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
 
       <View id={id} />

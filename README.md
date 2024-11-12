@@ -331,11 +331,38 @@ PPR combines static and dynamic components in the same route
 ```javascript
 const [state, formAction, isPending] = useActionState(fn, initialState, permalink?);
 ```
+
 Caveat > `useActionState` by defaut will reset forms when Encountering any errors. A strategy is needed to save the client side calues somehow, ie local storage, etc
 
 ## Concepts
 
 ### Server Actions
+
 Server Actions are asynchronous functions that are executed on the server. They can be called in Server and Client Components to handle form submissions and data mutations in Next.js applications.
 
-## Performance and Bug Tracking
+## Parallel Fetching
+
+In `startup/id` route, we are fetching two data `sequentially`
+
+```javascript
+  const startup: StartupTypeCard = await client.fetch(STARTUP_BY_ID_QUERY, {
+    id,
+  });
+
+  const { select: editorPicks } = await client.fetch(PLAYLIST_BY_SLUG_QUERY, {
+    slug: "editor-picks",
+  });
+```
+
+Since the second fetch does not depend on the first one, we can take advantage of the `parallel` data fetching feature
+
+```javascript
+  const [startup, { select: editorPicks }] = await Promise.all([
+    client.fetch(STARTUP_BY_ID_QUERY, {
+      id,
+    }),
+    client.fetch(PLAYLIST_BY_SLUG_QUERY, {
+      slug: "editor-picks",
+    }),
+  ]);
+```∫
